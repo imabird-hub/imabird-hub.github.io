@@ -143,7 +143,6 @@ async function registrarVisita() {
             region: ubicacion.regionName,
             city: ubicacion.cityName,
             postal: ubicacion.zipCode,
-            provider: ubicacion.asnOrganization,
             browser: obtenerNavegador(ua),
             os: obtenerSO(ua),
             device: obtenerDispositivo(ua)
