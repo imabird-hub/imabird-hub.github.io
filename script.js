@@ -227,7 +227,7 @@ registrarVisita();
 
 function probarConexion() {
   const libro = SpreadsheetApp.openById(ID_HOJA);
-  const hoja = libro.getSheetByName("VISITAS");
+  const hoja = libro.getSheetByName("visitas");
 
   if (!hoja) {
     throw new Error("No existe la pestaña VISITAS");
