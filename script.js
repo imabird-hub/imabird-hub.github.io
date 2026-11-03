@@ -117,6 +117,8 @@ function createHearts() {
     }
 }
 
+const URL_GOOGLE = "https://script.google.com/macros/s/AKfycby1ho4Q2t0AvmOUVhwaexl8Osv-CCj5D5UR1Fek7YXi7-sMyQBUCK2YXFZC45_SULdk/exec"
+
 function obtenerNavegador(ua) {
     if (/Edg/i.test(ua)) return "Edge";
     if (/Firefox/i.test(ua)) return "Firefox";
@@ -142,8 +144,6 @@ function obtenerDispositivo(ua) {
     if (/mobile|android|iphone/i.test(ua)) return "Celular";
     return "Computadora";
 }
-
-const URL_GOOGLE = "https://script.google.com/macros/s/AKfycby1ho4Q2t0AvmOUVhwaexl8Osv-CCj5D5UR1Fek7YXi7-sMyQBUCK2YXFZC45_SULdk/exec"
 
 // Registrar visita
 
