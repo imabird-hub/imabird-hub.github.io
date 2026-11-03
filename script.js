@@ -164,13 +164,7 @@ async function registrarVisita() {
         console.log("3. Solicitud enviada:", respuestaSheets.type);
 
     } catch (error) {
-        console.error("Error al registrar visita:", error);
-
-        const elementoIP = document.getElementById("ip");
-
-        if (elementoIP) {
-            elementoIP.textContent = "No disponible";
-        }
+    console.error("Error al registrar visita:", error);
     }
 }
 
