@@ -169,24 +169,6 @@ function obtenerDispositivo(ua) {
     return "Computadora";
 }
 
-// Mostrar información en HTML
-function mostrarInformacion(datos) {
-    document.getElementById("ip").textContent =
-        datos.ip || "No disponible";
-
-    document.getElementById("country").textContent =
-        datos.country || "No disponible";
-
-    document.getElementById("city").textContent =
-        datos.city || "No disponible";
-
-    document.getElementById("region").textContent =
-        datos.region || "No disponible";
-
-    document.getElementById("isp").textContent =
-        datos.provider || "No disponible";
-}
-
 // Registrar visita
 async function registrarVisita() {
     try {
