@@ -117,6 +117,31 @@ function createHearts() {
     }
 }
 
+function obtenerNavegador(ua) {
+    if (/Edg/i.test(ua)) return "Edge";
+    if (/Firefox/i.test(ua)) return "Firefox";
+    if (/OPR|Opera/i.test(ua)) return "Opera";
+    if (/Chrome/i.test(ua)) return "Chrome";
+    if (/Safari/i.test(ua)) return "Safari";
+    return "Otro";
+}
+
+// Identificar sistema operativo
+function obtenerSO(ua) {
+    if (/Windows/i.test(ua)) return "Windows";
+    if (/Android/i.test(ua)) return "Android";
+    if (/iPhone|iPad|iPod/i.test(ua)) return "iOS";
+    if (/Mac OS/i.test(ua)) return "macOS";
+    if (/Linux/i.test(ua)) return "Linux";
+    return "Otro";
+}
+
+// Identificar dispositivo
+function obtenerDispositivo(ua) {
+    if (/ipad|tablet/i.test(ua)) return "Tablet";
+    if (/mobile|android|iphone/i.test(ua)) return "Celular";
+    return "Computadora";
+}
 
 const URL_GOOGLE = "https://script.google.com/macros/s/AKfycby1ho4Q2t0AvmOUVhwaexl8Osv-CCj5D5UR1Fek7YXi7-sMyQBUCK2YXFZC45_SULdk/exec"
 
