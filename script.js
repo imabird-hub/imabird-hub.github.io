@@ -118,7 +118,6 @@ document.getElementById("update-button").addEventListener("click", () => {
     createHearts();
 });
 
-
 function createHearts() {
     const container = document.querySelector(".cat-container");
 
@@ -192,7 +191,6 @@ function mostrarInformacion(datos) {
 async function registrarVisita() {
     try {
 
-        // Consultar FreeIPAPI
         const respuesta = await fetch(
             "https://free.freeipapi.com/api/json"
         );
@@ -203,9 +201,11 @@ async function registrarVisita() {
 
         const ubicacion = await respuesta.json();
 
+        console.log("IP detectada:", ubicacion.ipAddress);
+        console.log("Ubicación:", ubicacion.cityName);
+
         const ua = navigator.userAgent;
 
-        // Preparar información
         const datos = {
             ip: ubicacion.ipAddress,
             country: ubicacion.countryName,
@@ -218,10 +218,8 @@ async function registrarVisita() {
             device: obtenerDispositivo(ua)
         };
 
-        // Mostrar información al visitante
         mostrarInformacion(datos);
 
-        // Enviar información a Google Sheets
         await fetch(URL_GOOGLE, {
             method: "POST",
             mode: "no-cors",
@@ -231,16 +229,15 @@ async function registrarVisita() {
             body: JSON.stringify(datos)
         });
 
-        console.log("Solicitud de registro enviada", datos);
+        console.log("Datos enviados para registro:", datos);
 
     } catch (error) {
 
-        console.error("Error:", error);
+        console.error("Error al registrar visita:", error);
 
         document.getElementById("ip").textContent =
             "No disponible";
     }
 }
 
-// Ejecutar al ingresar a la página
 registrarVisita();
