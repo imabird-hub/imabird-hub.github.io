@@ -22,18 +22,14 @@ function drawCat() {
     if (now < jumpUntil) {
         jump = Math.abs(Math.sin((jumpUntil - now) / 800 * Math.PI * 2)) * 25;
     }
-
     ctx.save();
     ctx.translate(0, -jump);
-
     const orange = "#F39A38";
     const dark = "#A94E21";
     const cream = "#FFF0CE";
     const pink = "#F47D9B";
-
     // Cola: movimiento alternado
     const tail = Math.floor(now / 350) % 3;
-
     if (tail === 0) {
         pixel(13, 12, dark);
         pixel(14, 11, dark);
@@ -50,66 +46,47 @@ function drawCat() {
         pixel(15, 13, dark);
         pixel(16, 12, orange);
     }
-
     // Cuerpo sentado
     pixel(6, 9, dark, 7, 6);
     pixel(7, 10, orange, 5, 5);
-
     // Patitas
     pixel(6, 14, dark, 2, 2);
     pixel(11, 14, dark, 2, 2);
     pixel(6, 14, orange);
     pixel(11, 14, orange);
-
     // Cabeza
     pixel(5, 4, dark, 8, 6);
     pixel(6, 4, orange, 6, 5);
-
     // Orejas
     pixel(5, 2, dark, 2, 3);
     pixel(11, 2, dark, 2, 3);
     pixel(6, 3, pink);
     pixel(11, 3, pink);
-
     // Mejillas
     pixel(6, 8, "#FFB66D", 2, 1);
     pixel(10, 8, "#FFB66D", 2, 1);
-
     // Ojos
     pixel(7, 6, "#302039");
     pixel(11, 6, "#302039");
-
     // Brillo de los ojos
     pixel(7, 6, cream);
     pixel(11, 6, cream);
-
     // Nariz
     pixel(9, 7, pink);
-
     // Boca
     pixel(8, 8, "#66352B");
     pixel(9, 8, "#66352B");
-
     // Barriguita
     pixel(8, 11, cream, 3, 2);
-
     // Bigotes
     pixel(4, 8, cream);
     pixel(3, 9, cream);
     pixel(13, 8, cream);
     pixel(14, 9, cream);
-
     ctx.restore();
-
     requestAnimationFrame(drawCat);
 }
-
 drawCat();
-
-// Personalizar felicitación
-
-const greeting = document.getElementById("greeting");
-const personalMessage = document.getElementById("personal-message");
 
 document.getElementById("update-button").addEventListener("click", () => {
 
