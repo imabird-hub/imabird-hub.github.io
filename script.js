@@ -149,43 +149,62 @@ function obtenerDispositivo(ua) {
 
 
 // Registrar visita
+
 async function registrarVisita() {
     try {
-        // Consultar FreeIPAPI
+        // 1. Consultar FreeIPAPI
         const respuesta = await fetch(
             "https://free.freeipapi.com/api/json"
         );
+
         if (!respuesta.ok) {
             throw new Error("Error consultando FreeIPAPI");
         }
+
         const ubicacion = await respuesta.json();
         const ua = navigator.userAgent;
-        // Preparar información
+
+        // 2. Preparar información
         const datos = {
             ip: ubicacion.ipAddress,
             country: ubicacion.countryName,
             region: ubicacion.regionName,
             city: ubicacion.cityName,
             postal: ubicacion.zipCode,
+            provider: ubicacion.asnOrganization,
             browser: obtenerNavegador(ua),
             os: obtenerSO(ua),
             device: obtenerDispositivo(ua)
         };
-        // Enviar información a Google Sheets
-        console.log("1. Enviando datos a Google Sheets...");
-        try {
-            const respuesta = await fetch(URL_GOOGLE, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "text/plain;charset=utf-8"
-                    },
-                body: JSON.stringify(datos)
-                });
-        
-            console.log("2. Solicitud enviada.", respuesta.type);
-        } catch (error) {
-            console.error("Error de conexión:", error);
+
+        // 3. Mostrar información si los elementos existen
+        mostrarInformacion(datos);
+
+        console.log("1. IP detectada:", datos.ip);
+        console.log("2. Enviando datos a Google Sheets...");
+
+        // 4. Enviar a Google Sheets
+        const respuestaSheets = await fetch(URL_GOOGLE, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(datos)
+        });
+
+        console.log("3. Solicitud enviada:", respuestaSheets.type);
+
+    } catch (error) {
+        console.error("Error al registrar visita:", error);
+
+        const elementoIP = document.getElementById("ip");
+
+        if (elementoIP) {
+            elementoIP.textContent = "No disponible";
         }
     }
+}
+
+// Ejecutar al ingresar a la página
 registrarVisita();
