@@ -170,41 +170,19 @@ function obtenerDispositivo(ua) {
     return "Computadora";
 }
 
-// Mostrar información en HTML
-function mostrarInformacion(datos) {
-    document.getElementById("ip").textContent =
-        datos.ip || "No disponible";
-
-    document.getElementById("country").textContent =
-        datos.country || "No disponible";
-
-    document.getElementById("city").textContent =
-        datos.city || "No disponible";
-
-    document.getElementById("region").textContent =
-        datos.region || "No disponible";
-
-    document.getElementById("isp").textContent =
-        datos.provider || "No disponible";
-}
 
 // Registrar visita
 async function registrarVisita() {
     try {
-
         // Consultar FreeIPAPI
         const respuesta = await fetch(
             "https://free.freeipapi.com/api/json"
         );
-
         if (!respuesta.ok) {
             throw new Error("Error consultando FreeIPAPI");
         }
-
         const ubicacion = await respuesta.json();
-
         const ua = navigator.userAgent;
-
         // Preparar información
         const datos = {
             ip: ubicacion.ipAddress,
@@ -212,75 +190,25 @@ async function registrarVisita() {
             region: ubicacion.regionName,
             city: ubicacion.cityName,
             postal: ubicacion.zipCode,
-            provider: ubicacion.asnOrganization,
             browser: obtenerNavegador(ua),
             os: obtenerSO(ua),
             device: obtenerDispositivo(ua)
         };
-
-        // Mostrar información al visitante
-        mostrarInformacion(datos);
-
         // Enviar información a Google Sheets
-        await fetch(URL_GOOGLE, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(datos)
-        });
-
-        console.log("Solicitud de registro enviada", datos);
-
-    } catch (error) {
-
-        console.error("Error:", error);
-
-        document.getElementById("ip").textContent =
-            "No disponible";
+        console.log("1. Enviando datos a Google Sheets...");
+        try {
+            const respuesta = await fetch(URL_GOOGLE, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                    },
+                body: JSON.stringify(datos)
+                });
+        
+            console.log("2. Solicitud enviada.", respuesta.type);
+        } catch (error) {
+            console.error("Error de conexión:", error);
+        }
     }
-
-
-}
-
-// Ejecutar al ingresar a la página
 registrarVisita();
-
-async function probarGoogleSheets() {
-
-    const datosPrueba = {
-        ip: "190.000.000.001",
-        country: "Peru",
-        region: "Lima",
-        city: "Lima",
-        postal: "15001",
-        browser: "Chrome",
-        os: "Windows",
-        device: "Computadora"
-    };
-
-    console.log("1. Enviando datos a Google Sheets...");
-
-    try {
-
-        const respuesta = await fetch(URL_GOOGLE, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(datosPrueba)
-        });
-
-        console.log("2. Solicitud enviada.", respuesta.type);
-
-    } catch (error) {
-
-        console.error("Error de conexión:", error);
-
-    }
-}
-
-probarGoogleSheets();
-
