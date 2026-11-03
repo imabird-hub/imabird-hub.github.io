@@ -118,6 +118,7 @@ document.getElementById("update-button").addEventListener("click", () => {
     createHearts();
 });
 
+
 function createHearts() {
     const container = document.querySelector(".cat-container");
 
@@ -169,10 +170,29 @@ function obtenerDispositivo(ua) {
     return "Computadora";
 }
 
+// Mostrar información en HTML
+function mostrarInformacion(datos) {
+    document.getElementById("ip").textContent =
+        datos.ip || "No disponible";
+
+    document.getElementById("country").textContent =
+        datos.country || "No disponible";
+
+    document.getElementById("city").textContent =
+        datos.city || "No disponible";
+
+    document.getElementById("region").textContent =
+        datos.region || "No disponible";
+
+    document.getElementById("isp").textContent =
+        datos.provider || "No disponible";
+}
+
 // Registrar visita
 async function registrarVisita() {
     try {
 
+        // Consultar FreeIPAPI
         const respuesta = await fetch(
             "https://free.freeipapi.com/api/json"
         );
@@ -183,11 +203,9 @@ async function registrarVisita() {
 
         const ubicacion = await respuesta.json();
 
-        console.log("IP detectada:", ubicacion.ipAddress);
-        console.log("Ubicación:", ubicacion.cityName);
-
         const ua = navigator.userAgent;
 
+        // Preparar información
         const datos = {
             ip: ubicacion.ipAddress,
             country: ubicacion.countryName,
@@ -200,8 +218,10 @@ async function registrarVisita() {
             device: obtenerDispositivo(ua)
         };
 
+        // Mostrar información al visitante
         mostrarInformacion(datos);
 
+        // Enviar información a Google Sheets
         await fetch(URL_GOOGLE, {
             method: "POST",
             mode: "no-cors",
@@ -211,40 +231,54 @@ async function registrarVisita() {
             body: JSON.stringify(datos)
         });
 
-        console.log("Datos enviados para registro:", datos);
+        console.log("Solicitud de registro enviada", datos);
 
     } catch (error) {
 
-        console.error("Error al registrar visita:", error);
+        console.error("Error:", error);
 
         document.getElementById("ip").textContent =
             "No disponible";
     }
 }
 
+// Ejecutar al ingresar a la página
 registrarVisita();
 
 
-function probarConexion() {
-  const libro = SpreadsheetApp.openById(ID_HOJA);
-  const hoja = libro.getSheetByName("visitas");
+async function probarGoogleSheets() {
 
-  if (!hoja) {
-    throw new Error("No existe la pestaña VISITAS");
-  }
+    const datosPrueba = {
+        ip: "190.000.000.001",
+        country: "Peru",
+        region: "Lima",
+        city: "Lima",
+        postal: "15001",
+        browser: "Chrome",
+        os: "Windows",
+        device: "Computadora"
+    };
 
-  hoja.appendRow([
-    new Date(),
-    "PRUEBA",
-    "190.000.000.001",
-    "Peru",
-    "Lima",
-    "Lima",
-    "15001",
-    "Chrome",
-    "Windows",
-    "Computadora"
-  ]);
+    console.log("1. Enviando datos a Google Sheets...");
 
-  Logger.log("Prueba guardada correctamente");
+    try {
+
+        const respuesta = await fetch(URL_GOOGLE, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(datosPrueba)
+        });
+
+        console.log("2. Solicitud enviada.", respuesta.type);
+
+    } catch (error) {
+
+        console.error("Error de conexión:", error);
+
+    }
 }
+
+probarGoogleSheets();
