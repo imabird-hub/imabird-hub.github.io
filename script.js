@@ -177,9 +177,6 @@ async function registrarVisita() {
             device: obtenerDispositivo(ua)
         };
 
-        // 3. Mostrar información si los elementos existen
-        mostrarInformacion(datos);
-
         console.log("1. IP detectada:", datos.ip);
         console.log("2. Enviando datos a Google Sheets...");
 
