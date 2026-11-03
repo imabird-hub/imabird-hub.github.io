@@ -223,3 +223,28 @@ async function registrarVisita() {
 }
 
 registrarVisita();
+
+
+function probarConexion() {
+  const libro = SpreadsheetApp.openById(ID_HOJA);
+  const hoja = libro.getSheetByName("VISITAS");
+
+  if (!hoja) {
+    throw new Error("No existe la pestaña VISITAS");
+  }
+
+  hoja.appendRow([
+    new Date(),
+    "PRUEBA",
+    "190.000.000.001",
+    "Peru",
+    "Lima",
+    "Lima",
+    "15001",
+    "Chrome",
+    "Windows",
+    "Computadora"
+  ]);
+
+  Logger.log("Prueba guardada correctamente");
+}
